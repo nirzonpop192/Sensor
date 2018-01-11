@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Sensor</string>
+    <string name="current_x">Current X</string>
+    <string name="current_y">Current Y</string>
+    <string name="current_z">Current Z</string>
+</resources>
