@@ -58,7 +58,7 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
     private double latitude; // latitude
     private double longitude; // longitude
 
-   // private GpsNotificationUser gpsNotificationUser;
+    // private GpsNotificationUser gpsNotificationUser;
 
     private LocationManager locationManager;
 
@@ -162,7 +162,7 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
 
         if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
 
                 return;
@@ -216,6 +216,8 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
     public void onLocationChanged(Location location) {
 
         Toast.makeText(mContext, "A " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Lati " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Long " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
         saveRowData(location);
 
@@ -297,11 +299,11 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
         if (mLastLocation != null) {
 
             updateUI(location);
-            //lblLocation.setText(latitude + ", " + longitude);
+
 
         } else {
 
-            // lblLocation.setText("(Couldn't get the location. Make sure location is enabled on the device)");
+
         }
     }
 
@@ -355,8 +357,6 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
             savaLocationAccuarcyData(location);
 
 
-
-
         }
 
 
@@ -381,7 +381,7 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
         locationDataWithAccuarcy.setLongitude(location.getLongitude());
         locationDataWithAccuarcy.setAltitude(location.getAltitude());
         locationDataWithAccuarcy.setDataAnd*/
-       // Time(DateUtility.getCurrentTime());
+        // Time(DateUtility.getCurrentTime());
 //        locationDataWithAccuarcy.save();
 
         Toast.makeText(mContext, "accuracy " + location.getAccuracy(), Toast.LENGTH_LONG).show();
@@ -390,19 +390,17 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
 
     }
 
+    private String convert(Double d){
+        return String.valueOf(d);
+    }
+
     private void saveRowData(Location location) {
 
-      /*  LocationDataWithoutAccuarcy locationDataWithoutAccuarcy = new LocationDataWithoutAccuarcy();
+        LocationModel locationModel= new LocationModel(String.valueOf(location.getAccuracy()),convert(location.getLatitude()),convert(location.getLongitude()));
 
-        locationDataWithoutAccuarcy.setRoadId(this.mRoad.getRoad_id());
-        locationDataWithoutAccuarcy.setAccuracy(location.getAccuracy());
-        locationDataWithoutAccuarcy.setLatitude(location.getLatitude());
-        locationDataWithoutAccuarcy.setLongitude(location.getLongitude());
-        locationDataWithoutAccuarcy.setAltitude(location.getAltitude());
-        locationDataWithoutAccuarcy.setDataAndTime(DateUtility.getCurrentTime());
-        locationDataWithoutAccuarcy.setRowData(true);
+        locationModel.save();
 
-        locationDataWithoutAccuarcy.save();*/
+
 
 
     }
@@ -413,7 +411,7 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
         hasGps = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
-        if (hasGps == true && ConnectionDetector.isNetworkConnected(mContext) == false) {
+        if (hasGps && !ConnectionDetector.isNetworkConnected(mContext)) {
 
 
             boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -522,16 +520,6 @@ public class GPSTrackerGoogleApiClient extends Service implements LocationListen
         }
         return currentBestLocation;
     }
-
-   /* public boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            // There are no active networks.
-            return false;
-        } else
-            return true;
-    }*/
 
 
 }

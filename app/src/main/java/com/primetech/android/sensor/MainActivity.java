@@ -1,9 +1,11 @@
 package com.primetech.android.sensor;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.btn_reset)
     Button btn_reset;
+    @BindView(R.id.btn_view)
+    Button btn_view;
 
     long latUpdatedTime;
     private Sensor mAccelerometer;
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        LocationModel location= new LocationModel("45.45","34.34");
+        LocationModel location= new LocationModel("42","45.45","34.34");
 //        location.save();
         gpsTrackerGoogleApiClient = new GPSTrackerGoogleApiClient(getApplicationContext(), this, location);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -90,6 +94,13 @@ public class MainActivity extends AppCompatActivity
         });
 
         latUpdatedTime = System.currentTimeMillis();
+
+        btn_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,ListActivity.class));
+            }
+        });
     }
 
     @Override
