@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private float delta_XMax = 0f;
     private float delta_YMax = 0f;
     private float delta_ZMax = 0f;
+    private GPSTrackerGoogleApiClient gpsTrackerGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         LocationModel location= new LocationModel("45.45","34.34");
-        location.save();
-
+//        location.save();
+        gpsTrackerGoogleApiClient = new GPSTrackerGoogleApiClient(getApplicationContext(), this, location);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         if (mSensorManager != null) {
